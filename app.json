@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "makeIt",
+    "slug": "makeIt",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/Notes.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#e6ac17"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Notes.png",
+        "backgroundColor": "#e6ac17"
+      },
+      "package": "com.samuelcastillo.makeIt",
+      "versionCode": 4
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dbc583e9-4a41-42e0-a2d2-3e9faaaa6b7d"
+      }
+    },
+    "plugins": [
+        ["expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": ["-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"]
+          }
+        }]
+    ]
+  }
+}

@@ -1,56 +1,46 @@
-import React, {useState} from "react";
-import { StyleSheet, View, Text, TextInput, Button, Dimensions } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import RNPickerSelect from 'react-native-picker-select'
-import { AntDesign } from '@expo/vector-icons';
-import { useSQLiteContext } from 'expo-sqlite/next';
+import React, { useState } from "react";
+import { StyleSheet, View, TextInput, Button } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { useSQLiteContext } from "expo-sqlite";
 import { constant } from "../utils/constants";
-import moment from "moment"
-const Form =(props)=>{
-    const db = useSQLiteContext();
-    const {setOpen, tasks} = props
-    const [date, setDate] = useState()
-    const [time, setTime] = useState()
-    const [timeCrude, setTimeCrude] = useState()
-    const [title, setTitle] = useState()
-    const [desc, setDesc] = useState()
-    const handleDate = (event,fecha) => {
-        const nuevaFecha = moment(fecha).format("DD/MM/YYYY")
-        setDate(nuevaFecha)
-      }
-      const handleTime = (event,Time) => {
-        var h = new Date(event.nativeEvent.timestamp).getHours();
-        var m = new Date(event.nativeEvent.timestamp).getMinutes();
-        h = (h<10) ? '0' + h : h;
-        m = (m<10) ? '0' + m : m;
-        setTimeCrude(event.nativeEvent.timestamp)
-        var output = h + ':' + m;
-        setTime(output)
-      }
-      const saveTask = async()=>{
-        await db.runAsync(`INSERT INTO test (title, descripcion, time, date) VALUES (?, ?, ?, ?)`, title, desc, timeCrude, date)        
-        setOpen()
-      }
-    return(
-        <View style={styles.container}>
-            <AntDesign 
-                name="closecircle" 
-                size={30} 
-                color={constant.morado} 
-                onPress={setOpen}
-                style={styles.closeButton}
-            />
-            <TextInput 
-                placeholder="Titulo"
-                style={styles.input}
-                onChange={(e)=> setTitle(e.nativeEvent.text)}
-            />
-            <TextInput 
-                placeholder="Descripcion"
-                style={[styles.input, styles.textArea]}
-                onChange={(e)=> setDesc(e.nativeEvent.text)}
-                multiline
-            />
+const Form = (props) => {
+  const db = useSQLiteContext();
+  const { setOpen } = props;
+  const [title, setTitle] = useState();
+  const [desc, setDesc] = useState();
+
+  const saveTask = async () => {
+    const now = new Date().toISOString();
+    await db.runAsync(
+      "INSERT INTO test (title, descripcion, time, date) VALUES (?, ?, ?, ?)",
+      title,
+      desc,
+      Date.now(),
+      now,
+    );
+    setOpen();
+  };
+
+  return (
+    <View style={styles.container}>
+      <AntDesign
+        name="closecircle"
+        size={30}
+        color={constant.morado}
+        onPress={setOpen}
+        style={styles.closeButton}
+      />
+      <TextInput
+        placeholder="Titulo"
+        style={styles.input}
+        onChange={(e) => setTitle(e.nativeEvent.text)}
+      />
+      <TextInput
+        placeholder="Descripcion"
+        style={[styles.input, styles.textArea]}
+        onChange={(e) => setDesc(e.nativeEvent.text)}
+        multiline
+      />
             {/* <View style={{margin: 20}}>
               {/* <RNPickerSelect
                         placeholder={{
@@ -75,10 +65,10 @@ const Form =(props)=>{
                         {/* {
                 time != undefined && <Text style={styles.title}>{time}</Text> || <DateTimePicker  value={new Date()} mode="time" onChange={handleTime}/>
             } */}
-            <Button title="Registrar Nota" onPress={saveTask} color="green" disabled={desc && desc.length > 5 ? false : true}/>
-        </View>
-    )
-}
+      <Button title="Registrar Nota" onPress={saveTask} color="green" disabled={!(desc && desc.length > 5)} />
+    </View>
+  );
+};
 const styles = StyleSheet.create({
     container: {
         width: 350,
@@ -122,5 +112,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold"
     }
-})
-export default Form
+});
+export default Form;

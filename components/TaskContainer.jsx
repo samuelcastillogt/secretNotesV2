@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Dimensions, StatusBar,ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
-import { useSQLiteContext } from 'expo-sqlite/next';
+import { useSQLiteContext } from 'expo-sqlite';
 import Task from './Task';
 import Empty from './Empty';
 const TaskContainer = (props)=>{
@@ -16,7 +16,7 @@ const TaskContainer = (props)=>{
            console.log(error)
        }
      }
-     searchTask= async(titulo)=>{
+      const searchTask = async(titulo)=>{
       console.log
       if(titulo.length < 3){
         getAllTasks();

@@ -34,7 +34,18 @@
       }
     },
     "plugins": [
-        ["expo-sqlite",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
+        }
+      ],
+      [
+        "expo-sqlite",
         {
           "enableFTS": true,
           "useSQLCipher": true,
@@ -45,7 +56,8 @@
           "ios": {
             "customBuildFlags": ["-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"]
           }
-        }]
+        }
+      ]
     ]
   }
 }
